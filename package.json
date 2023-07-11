@@ -1,0 +1,27 @@
+{
+	"name": "gulp-webp-html-nosvg",
+	"version": "1.0.0",
+	"description": "Replaces the <img> to <picture> > <source> || <img> in HTML files. Formats Webp and Avif.  (Exclude GIF, SVG)",
+	"main": "test/index.js",
+	"dependencies": {
+		"gulp-util": "^3.0.8",
+		"through2": "^3.0.1"
+	},
+	"scripts": {
+	},
+	"author": "Blatisgense",
+	"repository": {
+		"url": ""
+	},
+	"bugs": {
+	},
+	"homepage": "",
+	"keywords": [
+		"gulp",
+		"webp",
+		"html",
+		"avif",
+		"picture"
+	],
+	"license": "MIT"
+}
