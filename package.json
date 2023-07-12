@@ -1,21 +1,19 @@
 {
-	"name": "gulp-webp-html-nosvg",
+	"name": "gulp_html_img_to_picture",
 	"version": "1.0.0",
 	"description": "Replaces the <img> to <picture> > <source> || <img> in HTML files. Formats Webp and Avif.  (Exclude GIF, SVG)",
 	"main": "test/index.js",
 	"dependencies": {
-		"gulp-util": "^3.0.8",
+		"plugin-error": "^2.0.1",
 		"through2": "^3.0.1"
 	},
-	"scripts": {
-	},
+	"type": "module",
+	"scripts": {},
 	"author": "Blatisgense",
 	"repository": {
-		"url": ""
+		"url": "https://github.com/blatisgense/Gulp_html-img_to_picture"
 	},
-	"bugs": {
-	},
-	"homepage": "",
+	"homepage": "https://github.com/blatisgense/Gulp_html-img_to_picture",
 	"keywords": [
 		"gulp",
 		"webp",
