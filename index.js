@@ -49,8 +49,8 @@ function gulp_html_img_to_picture ({avif, webp, avif_prefix, webp_prefix, avif_p
 										// create replace line function =>
 										const create_line = () => {
 											let line = `<picture>`;
-											avif === true ? line += `<source srcSet="${avif_prefix}${name}${avif_postfix}.avif" type="image/avif">` : ``;
-											webp === true ? line += `<source srcSet="${webp_prefix}${name}${webp_postfix}.webp" type="image/webp">` : ``;
+											avif === true ? line += `<source srcset="${avif_prefix}${name}${avif_postfix}.avif" type="image/avif">` : ``;
+											webp === true ? line += `<source srcset="${webp_prefix}${name}${webp_postfix}.webp" type="image/webp">` : ``;
 											line += `${img_arr[i]}</picture>`;
 											return line;
 										}
