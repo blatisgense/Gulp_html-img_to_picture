@@ -40,7 +40,7 @@ function gulp_html_img_to_picture (avif, webp, avif_prefix, webp_prefix, avif_po
 							inside_picture = true
 						}
 						if (line.indexOf('<img') + 1 && inside_picture) {
-							const Re = /<img([^>]*)src="(\S+)"([^>]*)>/gi; // RegExp for img, includes all attributes
+							const Re = /<img([^>]*)src=["'`](\S+)["'`]([^>]*)>/gi; // RegExp for img, includes all attributes
 							let regexArr = [], img_arr = [], url_array = [], newHTMLArr = [];
 							regexArr.push(Re.exec(line));
 							regexArr.forEach(item => {
