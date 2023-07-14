@@ -1,9 +1,18 @@
+// imports
 import PluginError from "plugin-error";
 import through from 'through2';
-
+// name
 const pluginName = 'gulp_html_img_to_picture';
 
-function gulp_html_img_to_picture () {
+function gulp_html_img_to_picture ({avif, webp, avif_prefix, webp_prefix, avif_postfix, webp_postfix}) { // options
+	// default values =>
+	if (!webp) webp = false;
+	if (!avif) avif = false;
+	if (!webp_prefix) webp_prefix = '';
+	if (!avif_postfix) avif_postfix = '';
+	if (!webp_postfix) webp_postfix = '';
+	if (!avif_prefix) avif_prefix = '';
+	// function =>
 	return through.obj(
 		function (file, encoding, cb) {
 			if (file.isStream()) {
@@ -37,7 +46,16 @@ function gulp_html_img_to_picture () {
 								if ((!url_array[i].includes('.svg')) && !(url_array[i].includes('.gif')) && (!url_array[i].includes('.SVG')) && !(url_array[i].includes('.GIF'))) {
 									let name = url_array[i].split('.')[0];
 									if (!(line.includes('picture>')) && !(line.includes('<picture'))){ // check if img already in <picture>, if yes we're not replace it
-										newHTMLArr.push(`<picture><source srcset="${name}.webp" type="image/webp">${img_arr[i]}</picture>`) // line for replace
+										// create replace line function =>
+										const create_line = () => {
+											let line = `<picture>`;
+											avif === true ? line += `<source srcSet="${avif_prefix}${name}${avif_postfix}.avif" type="image/avif">` : ``;
+											webp === true ? line += `<source srcSet="${webp_prefix}${name}${webp_postfix}.webp" type="image/webp">` : ``;
+											line += `${img_arr[i]}</picture>`;
+											return line;
+										}
+										let replace = create_line();
+										newHTMLArr.push(replace);
 										line = line.replace(img_arr[i], newHTMLArr[i]) // replacing
 									}
 								}
@@ -55,9 +73,4 @@ function gulp_html_img_to_picture () {
 		}
 	)
 }
-
-//todo add option to  include original file and avif
-
-//srcset in original img doesnt support
-
 export default gulp_html_img_to_picture;
