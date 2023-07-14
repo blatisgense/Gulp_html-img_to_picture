@@ -1,6 +1,6 @@
 {
-	"name": "gulp_html_img_to_picture",
-	"version": "1.4.1",
+	"name": "gulp_img_transform_to_picture",
+	"version": "1.4.3",
 	"description": "Replaces the <img> to <picture> in HTML files. Formats Webp and Avif (Exclude GIF, SVG).",
 	"main": "index.js",
 	"dependencies": {
@@ -10,9 +10,9 @@
 	"type": "module",
 	"author": "Blatisgense",
 	"repository": {
-		"url": "https://github.com/blatisgense/Gulp_img_transform_to_picture"
+		"url": "https://github.com/blatisgense/gulp_img_transform_to_picture"
 	},
-	"homepage": "https://github.com/blatisgense/Gulp_img_transform_to_picture#readme",
+	"homepage": "https://github.com/blatisgense/gulp_img_transform_to_picture#readme",
 	"keywords": [
 		"gulp",
 		"webp",
