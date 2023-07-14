@@ -50,7 +50,7 @@
 <!--no-->
 <img src="filename.SVG">
 ```
-### Do not support more 2 tags at 1 line (Fix in future);
+### Do not support 2 and more tags at 1 line (Fix in future);
 ```html
 <!--no-->
 <img src="filename.jpg" alt="" class="img" srcset=""> <img src="filename.jpg" alt="" class="img" srcset="">
