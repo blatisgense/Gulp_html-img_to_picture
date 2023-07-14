@@ -4,14 +4,21 @@ import through from 'through2';
 // name
 const pluginName = `gulp_img_transform_to_picture`;
 
-function gulp_html_img_to_picture ({avif, webp, avif_prefix, webp_prefix, avif_postfix, webp_postfix}) { // options
-	// default values =>
-	if (!webp) webp = false;
-	if (!avif) avif = false;
-	if (!webp_prefix) webp_prefix = '';
-	if (!avif_postfix) avif_postfix = '';
-	if (!webp_postfix) webp_postfix = '';
-	if (!avif_prefix) avif_prefix = '';
+function gulp_html_img_to_picture (avif, webp, avif_prefix, webp_prefix, avif_postfix, webp_postfix) { // options
+	let default_config = {
+		avif: true,
+		webp: true,
+		webp_prefix: '',
+		avif_postfix: '',
+		webp_postfix: '',
+		avif_prefix: ''
+	}
+	if (webp) default_config.webp = webp;
+	if (avif) avif = default_config.avif;
+	if (webp_prefix) default_config.webp_prefix = webp_prefix;
+	if (avif_postfix) default_config.avif_postfix = avif_postfix;
+	if (webp_postfix) default_config.webp_postfix = webp_postfix;
+	if (avif_prefix) default_config.avif_prefix = avif_prefix;
 	// function =>
 	return through.obj(
 		function (file, encoding, cb) {
@@ -49,8 +56,12 @@ function gulp_html_img_to_picture ({avif, webp, avif_prefix, webp_prefix, avif_p
 										// create replace line function =>
 										const create_line = () => {
 											let line = `<picture>`;
-											avif === true ? line += `<source srcset="${avif_prefix}${name}${avif_postfix}.avif" type="image/avif">` : ``;
-											webp === true ? line += `<source srcset="${webp_prefix}${name}${webp_postfix}.webp" type="image/webp">` : ``;
+											if (default_config.avif === true){
+												line += `<source srcset="${default_config.avif_prefix}${name}${default_config.avif_postfix}.avif" type="image/avif">`
+											}
+											if (default_config.webp === true){
+												line += `<source srcset="${default_config.webp_prefix}${name}${default_config.webp_postfix}.webp" type="image/webp">`
+											}
 											line += `${img_arr[i]}</picture>`;
 											return line;
 										}
