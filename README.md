@@ -1,4 +1,4 @@
-# gulp_html_img_to_picture
+# gulp_img_transform_to_picture
 #### Author @blatisgense
 ### Replaces the 'img' to 'picture' in HTML files. Formats Webp and Avif (Exclude GIF, SVG). Saves all attributes from "img".
 ## Input:

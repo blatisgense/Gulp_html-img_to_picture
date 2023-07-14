@@ -2,7 +2,7 @@
 import PluginError from "plugin-error";
 import through from 'through2';
 // name
-const pluginName = 'gulp_html_img_to_picture';
+const pluginName = `gulp_img_transform_to_picture`;
 
 function gulp_html_img_to_picture ({avif, webp, avif_prefix, webp_prefix, avif_postfix, webp_postfix}) { // options
 	// default values =>
