@@ -81,5 +81,6 @@ gulp_html_img_to_picture({
         <source srcset="filenamePOSTFIX.avif" type="image/avif">
 })
 ```
-
-
+# Contacts:
+- Gmail: lavr.marudenko@gmail.com,
+- Skype and telegram @blatisgense.
