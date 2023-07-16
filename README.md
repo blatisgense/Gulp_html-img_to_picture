@@ -1,6 +1,16 @@
 # gulp_img_transform_to_picture
 #### Author @blatisgense
 ### Replaces the 'img' to 'picture' in HTML files. Formats Webp and Avif (Exclude GIF, SVG). Saves all attributes from "img".
+## How to use
+```js
+const gulp_function = () => {
+    return gulp.src(src)
+        // plugins
+        .pipe(gulp_img_transform_to_picture()) // should use before minify
+        // plugins
+        .pipe(gulp.dest(dest))
+}
+```
 ## Input:
 ```html
 <img src="filename.png">
@@ -60,25 +70,25 @@
 ```
 ##
 # Options
-```html
+```JS
 gulp_html_img_to_picture({
-    avif: Boolean, // Add avif 'source'? Default true.
-        <source srcset="filename.avif" type="image/avif">
+    avif: Boolean, // Add avif 'source'? Default true. =>
+        // <source srcset="filename.avif" type="image/avif">
 
-    webp: Boolean, // Add webp 'source'? Default true.
-        <source srcset="filename.webp" type="image/webp">
+    webp: Boolean, // Add webp 'source'? Default true. =>
+        // <source srcset="filename.webp" type="image/webp">
 
-    webp_prefix: String, // Set prefix to webp filename. Default '' (empty).
-        <source srcset="PREFIXfilename.webp" type="image/webp">
+    webp_prefix: String, // Set prefix to webp filename. Default '' (empty). =>
+        // <source srcset="PREFIXfilename.webp" type="image/webp">
 
-    webp_postfix: String, // Set postfix to webp filename. Default '' (empty).
-        <source srcset="filenamePOSTFIX.webp" type="image/webp">
+    webp_postfix: String, // Set postfix to webp filename. Default '' (empty). =>
+        // <source srcset="filenamePOSTFIX.webp" type="image/webp">
 
-    avif_prefix: String, // Set prefix to avif filename. Default '' (empty).
-        <source srcset="PREFIXfilename.avif" type="image/avif">
+    avif_prefix: String, // Set prefix to avif filename. Default '' (empty). =>
+        // <source srcset="PREFIXfilename.avif" type="image/avif">
 
-    avif_postfix: String // Set postfix to avif filename. Default '' (empty).
-        <source srcset="filenamePOSTFIX.avif" type="image/avif">
+    avif_postfix: String // Set postfix to avif filename. Default '' (empty). =>
+        // <source srcset="filenamePOSTFIX.avif" type="image/avif">
 })
 ```
 # Contacts:

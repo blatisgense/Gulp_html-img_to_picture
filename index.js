@@ -44,9 +44,14 @@ function gulp_html_img_to_picture (avif, webp, avif_prefix, webp_prefix, avif_po
 							let regexArr = [], img_arr = [], url_array = [], newHTMLArr = [];
 							regexArr.push(Re.exec(line));
 							regexArr.forEach(item => {
-								url_array.push(item[2]) // filename.ext
-								img_arr.push(item[0]) // original tag <img>
-							})
+								if (item){ // check for item exist
+									url_array.push(item[2]) // filename.ext
+									img_arr.push(item[0]) // original tag <img>
+								} else {
+									console.log({error: `[ERROR] ${line}  not correspond to condition.` })
+									return;
+								}
+							});
 							// replacing part =>
 							for (let i = 0; i < url_array.length; i++) {
 								// check for not replace gif and svg
