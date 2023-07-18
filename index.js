@@ -4,7 +4,7 @@ import through from 'through2';
 // name
 const pluginName = `gulp_img_transform_to_picture`;
 
-function gulp_html_img_to_picture (avif, webp, avif_prefix, webp_prefix, avif_postfix, webp_postfix) { // options
+function gulp_img_transform_to_picture (config) { // options obj.
 	let default_config = {
 		avif: true,
 		webp: true,
@@ -13,12 +13,14 @@ function gulp_html_img_to_picture (avif, webp, avif_prefix, webp_prefix, avif_po
 		webp_postfix: '',
 		avif_prefix: ''
 	}
-	if (webp) default_config.webp = webp;
-	if (avif) avif = default_config.avif;
-	if (webp_prefix) default_config.webp_prefix = webp_prefix;
-	if (avif_postfix) default_config.avif_postfix = avif_postfix;
-	if (webp_postfix) default_config.webp_postfix = webp_postfix;
-	if (avif_prefix) default_config.avif_prefix = avif_prefix;
+	if (!(config.webp == null))  default_config.webp = config.webp;
+	if (!(config.avif == null))  default_config.avif = config.avif;
+	if (config.webp_prefix) default_config.webp_prefix = config.webp_prefix;
+	if (config.avif_postfix) default_config.avif_postfix = config.avif_postfix;
+	if (config.webp_postfix) default_config.webp_postfix = config.webp_postfix;
+	if (config.avif_prefix) default_config.avif_prefix = config.avif_prefix;
+
+	console.log(default_config)
 	// function =>
 	return through.obj(
 		function (file, encoding, cb) {
@@ -89,4 +91,4 @@ function gulp_html_img_to_picture (avif, webp, avif_prefix, webp_prefix, avif_po
 		}
 	)
 }
-export default gulp_html_img_to_picture;
+export default gulp_img_transform_to_picture;

@@ -3,10 +3,13 @@
 ### Replaces the 'img' to 'picture' in HTML files. Formats Webp and Avif (Exclude GIF, SVG). Saves all attributes from "img".
 ## How to use
 ```js
+import gulp from 'gulp';
+import gulp_img_transform_to_picture from '../index.js';
+
 const gulp_function = () => {
     return gulp.src(src)
         // plugins
-        .pipe(gulp_img_transform_to_picture()) // should use before minify
+        .pipe(gulp_img_transform_to_picture( {options} )) // should use before minify
         // plugins
         .pipe(gulp.dest(dest))
 }
@@ -91,6 +94,9 @@ gulp_html_img_to_picture({
         // <source srcset="filenamePOSTFIX.avif" type="image/avif">
 })
 ```
+###
+### You can see changelogs at GitHub page https://github.com/blatisgense/gulp_img_transform_to_picture
+
 # Contacts:
 - Gmail: lavr.marudenko@gmail.com,
 - Skype and telegram @blatisgense.
