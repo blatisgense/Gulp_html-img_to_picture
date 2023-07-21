@@ -102,21 +102,26 @@ function gulp_img_transform_to_picture (config) { // options obj.
 					})
 				}
 				if (default_config.logger === true || default_config.logger_extended === true){
-					console.log(`${pluginName} logger:\n comments found = ${l_comments}\n < pictures > found = ${l_pictures}\n < img > found = ${l_imgs}\n < img > replaced = ${l_imgs_replaced}\n < img > excluded = ${l_imgs_excluded}, excluded by wrong extension = ${l_imgs_excluded_by_extensions}`)
+					console.log(`${pluginName} logger:\n comments found = ${l_comments}\n < pictures > found = ${l_pictures}\n < img > found = ${l_imgs}\n < img > replaced = ${l_imgs_replaced}\n < img > excluded = ${l_imgs_excluded}, excluded by extension = ${l_imgs_excluded_by_extensions}`)
 				}
 				if (default_config.logger_extended === true){
+					let line = `${pluginName} logger_extended:\n`
+					if (excluded_img_ext.length === 0 && excluded_img.length === 0){
+						line += `No items excluded.`
+					}
 					if (excluded_img.length > 0){
-						console.log({logger_extended: 'Excluded because < img > inside comment or < picture >:'})
-						excluded_img.map((item, index) =>{
-							console.log({img:item, index:index})
+						line += 'Excluded because < img > inside comment or < picture >:\n'
+						excluded_img.map((item) =>{
+							line += `${item}\n`
 						})
 					}
 					if (excluded_img_ext.length > 0){
-						console.log({logger_extended: 'Excluded because file extension in not defined in config (extensions):'})
+						line += 'Excluded because file extension in not defined in config (extensions):\n'
 						excluded_img_ext.map((item, index) =>{
-							console.log({img:item, index:index})
+							line += `${item}\n`
 						})
 					}
+					console.log(line)
 				}
 				file.contents = new Buffer.from(output.join(''))
 				this.push(file)
