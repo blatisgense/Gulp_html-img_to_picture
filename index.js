@@ -62,7 +62,7 @@ function gulp_img_transform_to_picture (config) { // options obj.
 						if (tag.includes('/picture>')) outside_picture = true;
 						if (tag.includes('<img')){
 							l_imgs++;
-							if (tag.includes('<img') && outside_picture && outside_comment) {
+							if (tag.includes('<img') && outside_picture && !(tag.includes('<!--'))) {
 								let filename = tag.match(regexp_src)
 								if (filename) {
 									filename = filename[0].match(regexp_quotes)
