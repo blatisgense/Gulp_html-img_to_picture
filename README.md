@@ -1,10 +1,11 @@
 # gulp_img_transform_to_picture
 #### Author @blatisgense
+## Please update plugin to 2.0.0 version (all know bug fixed, and many options added).
 ### Replaces the 'img' to 'picture' in HTML files. Formats Webp and Avif (Exclude GIF, SVG). Saves all attributes from "img".
 ## How to use
 ```js
 import gulp from 'gulp';
-import gulp_img_transform_to_picture from '../index.js';
+import gulp_img_transform_to_picture from 'gulp_img_transform_to_picture';
 
 const gulp_function = () => {
     return gulp.src(src)
@@ -16,60 +17,23 @@ const gulp_function = () => {
 ```
 ## Input:
 ```html
-<img src="filename.png">
-
-<img src="filename.jpg" alt="" class="img" srcset="">
-
-<img src="filename.jpg" srcset="">
+<img src="filename.jpg" alt="alt" class="img" any-attr="value">
 ```
 ## Output:
 ```html
 <picture>
     <source srcset="filename.avif" type="image/avif">
     <source srcset="filename.webp" type="image/webp">
-    <img src="filename.png">
-</picture>
-
-<picture>
-    <source srcset="filename.avif" type="image/avif">
-    <source srcset="filename.webp" type="image/webp">
-    <img src="filename.jpg" alt="" srcset="">
-</picture>
-
-<picture>
-    <source srcset="filename.avif" type="image/avif">
-    <source srcset="filename.webp" type="image/webp">
-    <img src="filename.jpg"  class="img" srcset="">
+    <img src="filename.jpg" alt="alt"  class="img" any-attr="value">
 </picture>
 ```
-#
+
 ###
-### Do not transform "img" that already in "picture", and .gif, .svg.
+### Do not transform "img" that already in "picture" and comment.
 ```html
-<!--no-->
-<picture>
-<img src="filename.png"></picture>
-<!--no-->
 <picture><img src="filename.png"></picture>
-<!--no-->
-<picture><img src="filename.png">
-</picture>
-<!--no-->
-<img src="filename.GIF">
-<!--no-->
-<img src="filename.gif">
-<!--no-->
-<img src="filename.svg">
-<!--no-->
-<img src="filename.SVG">
-```
-### Do not support 2 and more tags at 1 line (Fix in future);
-```html
-<!--no-->
-<img src="filename.jpg" alt="" class="img" srcset=""> <img src="filename.jpg" alt="" class="img" srcset="">
-<!--yes-->
-<img src="filename.jpg" alt="" class="img" srcset=""> 
-<img src="filename.jpg" alt="" class="img" srcset="">
+
+<!--<img src="filename.jpg">-->
 ```
 ##
 # Options
@@ -77,10 +41,16 @@ const gulp_function = () => {
 gulp_html_img_to_picture({
     avif: Boolean, // Add avif 'source'? Default true. =>
         // <source srcset="filename.avif" type="image/avif">
-
+    
     webp: Boolean, // Add webp 'source'? Default true. =>
         // <source srcset="filename.webp" type="image/webp">
 
+    logger: Boolean, // logs any statistics. Default false.
+    
+    logger_extended: Boolean, // logs any statistics and tags that has been exluded. Default false.
+    
+    extensions: Array[String], // replace < img > with this extensions. Default ["jpg","png","jpeg"] 
+    
     webp_prefix: String, // Set prefix to webp filename. Default '' (empty). =>
         // <source srcset="PREFIXfilename.webp" type="image/webp">
 
@@ -96,7 +66,7 @@ gulp_html_img_to_picture({
 ```
 ###
 ### You can see changelogs at GitHub page https://github.com/blatisgense/gulp_img_transform_to_picture
-
+### If you notice any bug or you wont to ask any idea please write to me (Contacts below).
 # Contacts:
 - Gmail: lavr.marudenko@gmail.com,
 - Skype and telegram @blatisgense.
