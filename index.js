@@ -73,7 +73,7 @@ function gulp_img_transform_to_picture (config) { // options obj.
 								if (filename) {
 									filename = filename[0].split('.')
 								} else {console.log(`[WARNING] ${tag} have incorrect src, please check it. Plugin exclude it.`);l_imgs_excluded++; return}
-								let extension = filename.pop().toLowerCase();
+								let extension = filename.pop().split('#')[0].toLowerCase();
 								filename = filename.join('.')
 								if (default_config.extensions.includes(extension)){
 									let line = `<picture>\t`;
