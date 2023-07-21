@@ -53,11 +53,7 @@ function gulp_img_transform_to_picture (config) { // options obj.
 				if (tags){
 					tags.map((tag) => {
 						if (tag.includes('<!--')) {
-							outside_comment = false; l_comments++;
-						}
-						if (tag.includes('-->')) {
-							outside_comment = true
-							if (tag.includes('<!--')) outside_comment = false;
+							l_comments++;
 						}
 						if (tag.includes('<picture')) {
 							outside_picture = false;
