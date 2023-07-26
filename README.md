@@ -1,6 +1,6 @@
 # gulp_img_transform_to_picture
 #### Author @blatisgense
-## Please update plugin to 2.1.1 version (all know bug fixed, and many options added).
+## Please update plugin to 2.2.0 version (all know bug fixed, and many options added).
 ### Replaces the 'img' to 'picture' in HTML files. Formats Webp and Avif (Exclude GIF, SVG). Saves all attributes from "img".
 ## How to use
 ```js
@@ -49,7 +49,9 @@ gulp_html_img_to_picture({
     
     logger_extended: Boolean, // logs any statistics and tags that has been exluded. Default false.
     
-    extensions: Array[String], // replace < img > with this extensions. Default ["jpg","png","jpeg"] 
+    extensions: Array[String], // replace < img > with this extensions. Default ["jpg","png","jpeg"].
+    
+    quotes: String, //sets the quotes for HTML attributes. Default  ' and ".
     
     webp_prefix: String, // Set prefix to webp filename. Default '' (empty). =>
         // <source srcset="PREFIXfilename.webp" type="image/webp">
@@ -66,7 +68,7 @@ gulp_html_img_to_picture({
 ```
 ###
 ### You can see changelogs at GitHub page https://github.com/blatisgense/gulp_img_transform_to_picture
-### If you notice any bug or you wont to ask any idea please write to me (Contacts below).
+### If you notice any bug, or you want to suggest an idea please write to me (Contacts below).
 # Contacts:
 - Gmail: lavr.marudenko@gmail.com,
 - Skype and telegram @blatisgense.

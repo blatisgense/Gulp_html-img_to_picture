@@ -10,6 +10,7 @@ function gulp_img_transform_to_picture (config) { // options obj.
 		webp: true,
 		logger: false,
 		logger_extended: false,
+		quotes: `'"`,
 		extensions: ["jpg","png","jpeg"],
 		webp_prefix: '',
 		avif_postfix: '',
@@ -25,6 +26,7 @@ function gulp_img_transform_to_picture (config) { // options obj.
 	if (config.avif_postfix) default_config.avif_postfix = config.avif_postfix;
 	if (config.webp_postfix) default_config.webp_postfix = config.webp_postfix;
 	if (config.avif_prefix) default_config.avif_prefix = config.avif_prefix;
+	if (config.quotes) default_config.quotes = config.quotes;
 	if (config.extensions) default_config.extensions = config.extensions;
 	return through.obj(
 		function (file, encoding, cb) {
@@ -44,12 +46,12 @@ function gulp_img_transform_to_picture (config) { // options obj.
 				let output = [];
 				let data = file.contents.toString();
 				const regexp_tag = /<(\/)?(!)?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'"`>\s]+))?)+\s*|\s*)>|(?=<!--)([\s\S]*?)-->|(?<=(<(\/)?(!)?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'"`>\s]+))?)+\s*|\s*)>))(\s*|\n*)([\s\S\n]*?)(\s*|\n*)(?=<)/gs;
-				const regexp_src = new RegExp(`src(\\s*)=(\\s*)["'\`]([\\s\\S]*?)["'\`]`, "gs");
-				const regexp_quotes = new RegExp(`["'\`]([\\s\\S]*?)["'\`]`, "gs");
-				const regexp_filename = new RegExp(`((?<=")(.*?)(?="))`, "gs");
+				const regexp_src = new RegExp(`src(\\s*)=(\\s*)[${default_config.quotes}]([\\s\\S]*?)[${default_config.quotes}]`, "gs");
+				console.log(regexp_src)
+				const regexp_quotes = new RegExp(`[${default_config.quotes}]([\\s\\S]*?)[${default_config.quotes}]`, "gs");
+				const regexp_filename = new RegExp(`((?<=")(.*?)(?="))|((?<=')(.*?)(?='))`, "gs");
 				let tags = data.match(regexp_tag);
 				let outside_picture = true;
-				let outside_comment = true;
 				if (tags){
 					tags.map((tag) => {
 						if (tag.includes('<!--')) {
@@ -66,13 +68,34 @@ function gulp_img_transform_to_picture (config) { // options obj.
 								let filename = tag.match(regexp_src)
 								if (filename) {
 									filename = filename[0].match(regexp_quotes)
-								} else {console.log(`[WARNING] ${tag} have incorrect src, please check it. Plugin exclude it.`);l_imgs_excluded++; return}
+								} else {
+									if (default_config.logger !== true || default_config.logger_extended !== true){
+										console.log(`[WARNING] ${tag} don't match RegExp (maybe you use wrong quotes) Plugin exclude it. stage 1`);
+									}
+									l_imgs_excluded++;
+									excluded_img.push(tag);
+									output.push(tag);
+									return}
 								if (filename) {
 									filename = filename[0].match(regexp_filename)
-								} else {console.log(`[WARNING] ${tag} have incorrect src, please check it. Plugin exclude it.`);l_imgs_excluded++; return}
+								} else {
+									if (default_config.logger !== true || default_config.logger_extended !== true){
+										console.log(`[WARNING] ${tag} don't match RegExp (maybe you use wrong quotes) Plugin exclude it. stage 2`);
+									}
+									l_imgs_excluded++;
+									excluded_img.push(tag);
+									output.push(tag);
+									return}
 								if (filename) {
 									filename = filename[0].split('.')
-								} else {console.log(`[WARNING] ${tag} have incorrect src, please check it. Plugin exclude it.`);l_imgs_excluded++; return}
+								} else {
+									if (default_config.logger !== true || default_config.logger_extended !== true){
+										console.log(`[WARNING] ${tag} don't match RegExp (maybe you use wrong quotes) Plugin exclude it. stage 3`);
+									}
+									l_imgs_excluded++;
+									excluded_img.push(tag);
+									output.push(tag);
+									return}
 								let extension = filename.pop().split('#')[0].toLowerCase();
 								filename = filename.join('.')
 								if (default_config.extensions.includes(extension)){
@@ -102,15 +125,15 @@ function gulp_img_transform_to_picture (config) { // options obj.
 					})
 				}
 				if (default_config.logger === true || default_config.logger_extended === true){
-					console.log(`${pluginName} logger:\n comments found = ${l_comments}\n < pictures > found = ${l_pictures}\n < img > found = ${l_imgs}\n < img > replaced = ${l_imgs_replaced}\n < img > excluded = ${l_imgs_excluded}, excluded by extension = ${l_imgs_excluded_by_extensions}`)
+					console.log(`[logger] ${pluginName}:\n comments found = ${l_comments}\n < pictures > found = ${l_pictures}\n < img > found = ${l_imgs}\n < img > replaced = ${l_imgs_replaced}\n < img > excluded = ${l_imgs_excluded}, excluded by extension = ${l_imgs_excluded_by_extensions}`)
 				}
 				if (default_config.logger_extended === true){
-					let line = `${pluginName} logger_extended:\n`
+					let line = `[logger_extended] ${pluginName}:\n`
 					if (excluded_img_ext.length === 0 && excluded_img.length === 0){
 						line += `No items excluded.`
 					}
 					if (excluded_img.length > 0){
-						line += 'Excluded because < img > inside comment or < picture >:\n'
+						line += 'Excluded because < img > inside comment or < picture >, or wrong quotes (you can set it in options):\n'
 						excluded_img.map((item) =>{
 							line += `${item}\n`
 						})
