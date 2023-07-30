@@ -47,7 +47,6 @@ function gulp_img_transform_to_picture (config) { // options obj.
 				let data = file.contents.toString();
 				const regexp_tag = /<(\/)?(!)?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'"`>\s]+))?)+\s*|\s*)>|(?=<!--)([\s\S]*?)-->|(?<=(<(\/)?(!)?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'"`>\s]+))?)+\s*|\s*)>))(\s*|\n*)([\s\S\n]*?)(\s*|\n*)(?=<)/gs;
 				const regexp_src = new RegExp(`src(\\s*)=(\\s*)[${default_config.quotes}]([\\s\\S]*?)[${default_config.quotes}]`, "gs");
-				console.log(regexp_src)
 				const regexp_quotes = new RegExp(`[${default_config.quotes}]([\\s\\S]*?)[${default_config.quotes}]`, "gs");
 				const regexp_filename = new RegExp(`((?<=")(.*?)(?="))|((?<=')(.*?)(?='))`, "gs");
 				let tags = data.match(regexp_tag);
