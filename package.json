@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "name": "gulp_img_transform_to_picture",
   "description": "Replace the <img> to <picture> within HTML files, support Webp and Avif formats.",
   "author": "Blatisgense",
