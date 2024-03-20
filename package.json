@@ -1,25 +1,34 @@
 {
-	"name": "gulp_img_transform_to_picture",
-	"version": "2.2.1",
-	"description": "Replaces the <img> to <picture> in HTML files. Formats Webp and Avif (Exclude GIF, SVG).",
-	"main": "index.js",
-	"dependencies": {
-		"plugin-error": "^2.0.1",
-		"through2": "^3.0.1"
-	},
-	"type": "module",
-	"author": "Blatisgense",
-	"repository": {
-		"url": "https://github.com/blatisgense/gulp_img_transform_to_picture"
-	},
-	"homepage": "https://github.com/blatisgense/gulp_img_transform_to_picture#readme",
-	"keywords": [
-		"gulp",
-		"webp",
-		"html",
-		"avif",
-		"picture",
-		"blatisgense"
-	],
-	"license": "MIT"
+  "version": "3.0.0",
+  "name": "gulp_img_transform_to_picture",
+  "description": "Replace the <img> to <picture> within HTML files, support Webp and Avif formats.",
+  "author": "Blatisgense",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "license": "MIT",
+  "type": "module",
+  "files": ["./index.d.ts", "./index.js"],
+  "repository": {
+    "url": "https://github.com/blatisgense/gulp_img_transform_to_picture"
+  },
+  "homepage": "https://github.com/blatisgense/gulp_img_transform_to_picture#readme",
+  "keywords": [
+    "gulp",
+    "webp",
+    "html",
+    "avif",
+    "blatisgense"
+  ],
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "dependencies": {
+    "plugin-error": "^2.0.1",
+    "through2": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/through2": "^2.0.41",
+    "typescript": "^5.4.2"
+  }
 }

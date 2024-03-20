@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/",
+    "sourceMap": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmitOnError": true,
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "declaration": true,
+    "removeComments": true,
+    "noImplicitAny": true,
+    "pretty": true
+  },
+  "include": ["index.ts"]
+}
