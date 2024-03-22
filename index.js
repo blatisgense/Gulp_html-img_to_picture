@@ -6,35 +6,52 @@ var Gulp_img_transform_to_picture;
         display_contents;
         quotes;
         extensions;
-        constructor({ extensions, display_contents, quotes }) {
+        ignore_attr;
+        logger;
+        constructor({ extensions, display_contents, quotes, ignore_attr, logger }) {
             this.quotes = (quotes !== undefined) ? quotes : '"';
             this.display_contents = (display_contents !== undefined) ? display_contents : false;
-            this.extensions = (extensions !== undefined) ? extensions : {
-                png: "webp",
-                jpg: true,
-                jpeg: true
-            };
+            this.ignore_attr = (ignore_attr !== undefined) ? ignore_attr : "data-ignore";
+            this.logger = (logger !== undefined) ? logger : false;
+            if (extensions !== undefined) {
+                extensions.png = (extensions.png !== undefined) ? extensions.png : "webp";
+                extensions.jpg = (extensions.jpg !== undefined) ? extensions.jpg : true;
+                extensions.jpeg = (extensions.jpeg !== undefined) ? extensions.jpeg : true;
+                this.extensions = extensions;
+            }
+            else
+                this.extensions = {
+                    png: "webp",
+                    jpg: true,
+                    jpeg: true
+                };
         }
     }
     Gulp_img_transform_to_picture.Config = Config;
 })(Gulp_img_transform_to_picture || (Gulp_img_transform_to_picture = {}));
 export default function gulp_img_transform_to_picture(config) {
-    config = config || new Gulp_img_transform_to_picture.Config({});
-    config.quotes = config.quotes || '"';
-    config.extensions = config.extensions || {
-        png: "webp",
-        jpg: true,
-        jpeg: true
-    };
-    config.display_contents = config.display_contents || false;
+    config = (config !== undefined) ? new Gulp_img_transform_to_picture.Config(config) : new Gulp_img_transform_to_picture.Config({});
     const tag_rg = new RegExp(`<img[^>]*?src(\\s+)?=(\\s+)?${config.quotes}?([^'"\` >]+?)[ ${config.quotes}][^>]*?>`, "g");
     const path_rg = new RegExp(`(?<=src(\\s+)?=(\\s+)?${config.quotes})(\\w|\\.|/|-|_)+(?=[ ${config.quotes}])`, "g");
     return through.obj(function (file, _encoding, cb) {
         try {
+            if (file.contents == null) {
+                this.emit('error', new PluginError("gulp_img_transform_to_picture", "File not found, cannot extract data."));
+                return;
+            }
+            let filename;
+            let transformed = { filename: "", items: [] };
+            if (config.logger) {
+                filename = (file.history !== undefined && file.history !== null) ? file.history[0].split("\\").pop() : "unrecognized";
+                transformed.filename = filename;
+            }
             let html = file.contents.toString();
             let tags = html.match(tag_rg);
             if (tags) {
                 tags.map((tag) => {
+                    if (tag.includes(config.ignore_attr)) {
+                        return;
+                    }
                     let path = tag.match(path_rg)[0].split(".");
                     if (path && path.length >= 2) {
                         let ext = path.pop();
@@ -49,14 +66,33 @@ export default function gulp_img_transform_to_picture(config) {
                             }
                             template += `${tag}</picture>`;
                             html = html.replace(tag, template);
+                            if (config.logger === "stats" || config.logger === true) {
+                                transformed.items.push(tag);
+                            }
                         }
                         return;
                     }
-                    console.log({ error: { message: `[WARNING] Cannot extract image info.` }, item: tag });
+                    if (config.logger === "error" || config.logger === true) {
+                        console.log({
+                            error: {
+                                filename: filename,
+                                message: `[WARNING] Cannot extract image info.`,
+                                item: tag
+                            },
+                        });
+                    }
                 });
             }
             file.contents = new Buffer.from(html);
             this.push(file);
+            if (config.logger === "stats" || config.logger === true) {
+                let message = `\nGulp_img_transform_to_picture logger:\nFilename: ${transformed.filename},\nTransformed items: [\n`;
+                transformed.items.map((el) => {
+                    message += `\t${el}\n`;
+                });
+                message += "]\n";
+                console.log(message);
+            }
         }
         catch (err) {
             this.emit('error', new PluginError("gulp_img_transform_to_picture", err));

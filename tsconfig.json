@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist/",
+    "outDir": "./",
     "sourceMap": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -12,5 +12,6 @@
     "noImplicitAny": true,
     "pretty": true
   },
-  "include": ["index.ts"]
+  "include": ["src/index.ts"],
+  "exclude": ["dist/**/*.*"]
 }

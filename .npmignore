@@ -1,5 +1,7 @@
 .idea
 .gitignore
+.gitattributes
 test
 src
 tsconfig.json
+index.js.map
