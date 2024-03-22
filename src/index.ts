@@ -3,7 +3,7 @@ import through from 'through2';
 import internal from "node:stream";
 
 namespace Gulp_img_transform_to_picture {
-    type Quotes = `'` | `"`;
+    type Quotes = "single" | "double";
     type Extension = "avif" | "webp" | boolean;
     type Logger = boolean | "error" | "stats";
     interface Extensions<T> {
@@ -12,13 +12,13 @@ namespace Gulp_img_transform_to_picture {
         jpg?: T;
         jpeg?: T;
     }
-    export interface Transformed {filename: string, items: Array<string>}
+    export type Transformed = Array<string>;
     export class Config {
-        display_contents: boolean;
-        quotes: Quotes;
-        extensions: Extensions<Extension>;
-        ignore_attr: string;
-        logger: Logger;
+        display_contents?: boolean;
+        quotes?: Quotes;
+        extensions?: Extensions<Extension>;
+        ignore_attr?: string;
+        logger?: Logger;
         constructor(
             {
                 extensions,
@@ -34,7 +34,7 @@ namespace Gulp_img_transform_to_picture {
                 logger?: Logger
             }
         ) {
-            this.quotes = (quotes !== undefined) ? quotes : '"';
+            this.quotes = (quotes !== undefined) ? quotes : "double";
             this.display_contents = (display_contents !== undefined) ? display_contents : false;
             this.ignore_attr = (ignore_attr !== undefined) ? ignore_attr : "data-ignore";
             this.logger = (logger !== undefined) ? logger : false;
@@ -54,8 +54,13 @@ namespace Gulp_img_transform_to_picture {
 
 export default function gulp_img_transform_to_picture (config?: Gulp_img_transform_to_picture.Config): internal.Transform {
     config = (config !== undefined) ? new Gulp_img_transform_to_picture.Config(config) : new Gulp_img_transform_to_picture.Config({});
-    const tag_rg: RegExp = new RegExp(`<img[^>]*?src(\\s+)?=(\\s+)?${config.quotes}?([^'"\` >]+?)[ ${config.quotes}][^>]*?>`, "g");
-    const path_rg: RegExp = new RegExp(`(?<=src(\\s+)?=(\\s+)?${config.quotes})(\\w|\\.|/|-|_)+(?=[ ${config.quotes}])`, "g");
+    const quote_setter: Record<"single" | "double", `"` | `'`> = {
+        single: `'`,
+        double: `"`
+    }
+    const quotes: `"` | `'` = quote_setter[config.quotes];
+    const tag_rg: RegExp = new RegExp(`<img[^>]*?src(\\s+)?=(\\s+)?${quotes}?([^'"\` >]+?)[ ${quotes}][^>]*?>`, "g");
+    const path_rg: RegExp = new RegExp(`(?<=src(\\s+)?=(\\s+)?${quotes})(\\w|\\.|/|-|_)+(?=[ ${quotes}])`, "g");
     return through.obj(
     function (file: any, _encoding: BufferEncoding, cb: through.TransformCallback): void {
             try {
@@ -64,10 +69,9 @@ export default function gulp_img_transform_to_picture (config?: Gulp_img_transfo
                     return;
                 }
                 let filename: string;
-                let transformed: Gulp_img_transform_to_picture.Transformed = {filename: "", items: []};
+                let transformed: Gulp_img_transform_to_picture.Transformed = [];
                 if (config.logger) {
                     filename = (file.history !== undefined && file.history !== null) ? file.history[0].split("\\").pop() : "unrecognized";
-                    transformed.filename = filename;
                 }
                 let html: string = file.contents.toString();
                 let tags: RegExpMatchArray = html.match(tag_rg);
@@ -79,7 +83,7 @@ export default function gulp_img_transform_to_picture (config?: Gulp_img_transfo
                         let path: Array<string> = tag.match(path_rg)[0].split(".");
                         if (path && path.length >= 2) {
                             let ext: string = path.pop();
-                            if (ext === "png" || ext === "jpg" || ext === "jpeg") {
+                            if (Object.keys(config.extensions).includes(ext)) {
                                 let template: string = "";
                                 template += (config.display_contents === false) ? `<picture>` : `<picture style="display: contents">`;
                                 if (config.extensions[ext] === true) {
@@ -90,7 +94,17 @@ export default function gulp_img_transform_to_picture (config?: Gulp_img_transfo
                                 template += `${tag}</picture>`;
                                 html = html.replace(tag, template);
                                 if (config.logger === "stats" || config.logger === true) {
-                                    transformed.items.push(tag);
+                                    transformed.push(tag);
+                                }
+                            } else {
+                                if (config.logger === "error" || config.logger === true) {
+                                    console.log({
+                                        error: {
+                                            filename: filename,
+                                            message: `[WARNING] File extension doesn't support, please define in within Config.`,
+                                            extension: ext
+                                        },
+                                    });
                                 }
                             }
                             return;
@@ -109,8 +123,8 @@ export default function gulp_img_transform_to_picture (config?: Gulp_img_transfo
                 file.contents = new (Buffer.from as any)(html);
                 this.push(file)
                 if (config.logger === "stats" || config.logger === true) {
-                    let message: string = `\nGulp_img_transform_to_picture logger:\nFilename: ${transformed.filename},\nTransformed items: [\n`;
-                    transformed.items.map((el: string):void => {
+                    let message: string = `\nGulp_img_transform_to_picture logger:\nFilename: ${filename},\nTransformed items: [\n`;
+                    transformed.map((el: string):void => {
                         message += `\t${el}\n`;
                     })
                     message += "]\n";

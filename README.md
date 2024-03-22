@@ -60,7 +60,7 @@ Configure behavior for different extensions. `false` disable transformation,
 
 
 ### quotes
-Type:`'` | `"`<br>Default:`"`<br>Description: Quotes type within HTML tags.
+Type:`"single"` | `"double"`<br>Default:`"double"`<br>Description: Quotes type within HTML tags.
 
 
 ### ignore_attr
@@ -72,6 +72,13 @@ Type:`boolean | "error" | "success"`<br>Default:`false`<br>Description: Logger o
 (errors and statistics).
 `false` disable Logger, `true` logs both Errors and Statistics, `"error"` of `"stats"` only specified one.
 ## Last changes
+**Patch 3.2.0:**
+- Fix Config type issue.
+- Add minification by Terser.
+- Add warning if file's extension unsupported.
+- Change Config.Quotes defining.
+- Small optimizations.
+
 **Patch 3.1.0:**
 - Fix issues with default config values.
 - Added ignore feature. Now able to ignore tags with special ignore attribute.

@@ -1,7 +1,7 @@
 /// <reference types="node" resolution-mode="require"/>
 import internal from "node:stream";
 declare namespace Gulp_img_transform_to_picture {
-    type Quotes = `'` | `"`;
+    type Quotes = "single" | "double";
     type Extension = "avif" | "webp" | boolean;
     type Logger = boolean | "error" | "stats";
     interface Extensions<T> {
@@ -10,16 +10,13 @@ declare namespace Gulp_img_transform_to_picture {
         jpg?: T;
         jpeg?: T;
     }
-    export interface Transformed {
-        filename: string;
-        items: Array<string>;
-    }
+    export type Transformed = Array<string>;
     export class Config {
-        display_contents: boolean;
-        quotes: Quotes;
-        extensions: Extensions<Extension>;
-        ignore_attr: string;
-        logger: Logger;
+        display_contents?: boolean;
+        quotes?: Quotes;
+        extensions?: Extensions<Extension>;
+        ignore_attr?: string;
+        logger?: Logger;
         constructor({ extensions, display_contents, quotes, ignore_attr, logger }: {
             extensions?: Extensions<Extension>;
             display_contents?: boolean;

@@ -1,5 +1,5 @@
 {
-  "version": "3.1.0",
+  "version": "3.2.0",
   "name": "gulp_img_transform_to_picture",
   "description": "Replace the <img> to <picture> within HTML files, support Webp and Avif formats.",
   "author": "Blatisgense",
@@ -9,7 +9,8 @@
   "type": "module",
   "files": ["./index.d.ts", "./index.js"],
   "repository": {
-    "url": "https://github.com/blatisgense/gulp_img_transform_to_picture"
+    "url": "https://github.com/blatisgense/gulp_img_transform_to_picture",
+    "type": "git"
   },
   "homepage": "https://github.com/blatisgense/gulp_img_transform_to_picture#readme",
   "keywords": [
@@ -17,10 +18,12 @@
     "webp",
     "html",
     "avif",
-    "blatisgense"
+    "blatisgense",
+    "typescript"
   ],
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "minify:js": "terser index.js --compress --mangle --output index.js"
   },
   "dependencies": {
     "plugin-error": "^2.0.1",
@@ -29,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^20.11.30",
     "@types/through2": "^2.0.41",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "terser": "^5.29.2"
   }
 }
